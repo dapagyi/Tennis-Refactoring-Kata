@@ -1,5 +1,6 @@
 // you can modify this, but keep the arguments
 var TennisGame = function(player1Name, player2Name) {
+
     this.P1point = 0;
     this.P2point = 0;
 
@@ -8,84 +9,58 @@ var TennisGame = function(player1Name, player2Name) {
 
     this.player1Name = player1Name;
     this.player2Name = player2Name;
+
+    this.nagyobbNeve = function(){
+      if (this.P1point>this.P2point) return this.player1Name;
+      else return this.player2Name;
+    }
+
 };
 
 // you should modify the internals of this function
 TennisGame.prototype.getScore = function() {
+
+    function pointRes(point){
+      switch (point) {
+        case 1:
+          return "Fifteen";
+          break;
+        case 2:
+          return "Thirty";
+          break;
+        case 3:
+          return "Forty";
+          break;
+        case 0:
+          return "Love";
+          break;
+        default:
+          return "";
+      }
+    }
+
     var score = "";
 
-    if (this.P1point === this.P2point && this.P1point < 3) {
-        if (this.P1point === 0)
-            score = "Love";
-        if (this.P1point === 1)
-            score = "Fifteen";
-        if (this.P1point === 2)
-            score = "Thirty";
-        score += "-All";
-    }
-    if (this.P1point === this.P2point && this.P1point > 2)
-        score = "Deuce";
-
-    if (this.P1point > 0 && this.P2point === 0) {
-        if (this.P1point === 1)
-            this.P1res = "Fifteen";
-        if (this.P1point === 2)
-            this.P1res = "Thirty";
-        if (this.P1point === 3)
-            this.P1res = "Forty";
-
-        this.P2res = "Love";
-        score = this.P1res + "-" + this.P2res;
-    }
-    if (this.P2point > 0 && this.P1point === 0) {
-        if (this.P2point === 1)
-            this.P2res = "Fifteen";
-        if (this.P2point === 2)
-            this.P2res = "Thirty";
-        if (this.P2point === 3)
-            this.P2res = "Forty";
-
-        this.P1res = "Love";
-        score = this.P1res + "-" + this.P2res;
+    if (this.P1point === this.P2point && this.P1point < 3){
+      score = pointRes(this.P1point) + "-All";
     }
 
-    if (this.P1point > this.P2point && this.P1point < 4) {
-        if (this.P1point === 2)
-            this.P1res = "Thirty";
-        if (this.P1point === 3)
-            this.P1res = "Forty";
-        if (this.P2point === 1)
-            this.P2res = "Fifteen";
-        if (this.P2point === 2)
-            this.P2res = "Thirty";
-        score = this.P1res + "-" + this.P2res;
-    }
-    if (this.P2point > this.P1point && this.P2point < 4) {
-        if (this.P2point === 2)
-            this.P2res = "Thirty";
-        if (this.P2point === 3)
-            this.P2res = "Forty";
-        if (this.P1point === 1)
-            this.P1res = "Fifteen";
-        if (this.P1point === 2)
-            this.P1res = "Thirty";
-        score = this.P1res + "-" + this.P2res;
+    if (this.P1point === this.P2point && this.P1point > 2) {
+      score = "Deuce";
     }
 
-    if (this.P1point > this.P2point && this.P2point >= 3) {
-        score = "Advantage player1";
+    if(Math.max(this.P1point,this.P2point) < 4 && this.P1point != this.P2point){
+      score = pointRes(this.P1point) + "-" + pointRes(this.P2point);
     }
 
-    if (this.P2point > this.P1point && this.P1point >= 3) {
-        score = "Advantage player2";
+    if(Math.min(this.P1point,this.P2point)>=3 && Math.abs(this.P1point - this.P2point)==1){
+        score = "Advantage " + this.nagyobbNeve();
     }
-    
-    if (this.P1point >= 4 && this.P2point >= 0 && (this.P1point - this.P2point) >= 2) {
-        score = "Win for player1";
+
+    if (Math.max(this.P1point,this.P2point) >= 4 && Math.abs(this.P1point - this.P2point) >= 2) {
+      score = "Win for " + this.nagyobbNeve();
     }
-    if (this.P2point >= 4 && this.P1point >= 0 && (this.P2point - this.P1point) >= 2) {
-        score = "Win for player2";
-    }
+
     return score;
 };
 
