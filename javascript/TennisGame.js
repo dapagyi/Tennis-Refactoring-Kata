@@ -34,7 +34,7 @@ TennisGame.prototype.getScore = function() {
       score = "Deuce";
     }
 
-    if(max < 4 && this.P1point != this.P2point){
+    if(max < 4 && diff != 0){
       score = pointRes[this.P1point] + "-" + pointRes[this.P2point];
     }
 
