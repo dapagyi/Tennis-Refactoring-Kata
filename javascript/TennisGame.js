@@ -19,45 +19,30 @@ var TennisGame = function(player1Name, player2Name) {
 
 // you should modify the internals of this function
 TennisGame.prototype.getScore = function() {
-
-    function pointRes(point){
-      switch (point) {
-        case 1:
-          return "Fifteen";
-          break;
-        case 2:
-          return "Thirty";
-          break;
-        case 3:
-          return "Forty";
-          break;
-        case 0:
-          return "Love";
-          break;
-        default:
-          return "";
-      }
-    }
+    var pointRes = ['Love','Fifteen','Thirty','Forty'];
+    var diff = Math.abs(this.P1point - this.P2point);
+    var min = Math.min(this.P1point,this.P2point);
+    var max = Math.max(this.P1point,this.P2point);
 
     var score = "";
 
     if (this.P1point === this.P2point && this.P1point < 3){
-      score = pointRes(this.P1point) + "-All";
+      score = pointRes[this.P1point] + "-All";
     }
 
     if (this.P1point === this.P2point && this.P1point > 2) {
       score = "Deuce";
     }
 
-    if(Math.max(this.P1point,this.P2point) < 4 && this.P1point != this.P2point){
-      score = pointRes(this.P1point) + "-" + pointRes(this.P2point);
+    if(max < 4 && this.P1point != this.P2point){
+      score = pointRes[this.P1point] + "-" + pointRes[this.P2point];
     }
 
-    if(Math.min(this.P1point,this.P2point)>=3 && Math.abs(this.P1point - this.P2point)==1){
+    if(min>=3 && diff == 1){
         score = "Advantage " + this.nagyobbNeve();
     }
 
-    if (Math.max(this.P1point,this.P2point) >= 4 && Math.abs(this.P1point - this.P2point) >= 2) {
+    if (max >= 4 && diff >= 2) {
       score = "Win for " + this.nagyobbNeve();
     }
 
